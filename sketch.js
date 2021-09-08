@@ -69,7 +69,7 @@ function setup() {
   trex.debug = false;
   
   //crea el suelo invisible
-  invisibleGround = createSprite(width/2,height-0,width,125);
+  invisibleGround = createSprite(width/2,height-10,width,125);
   //invisibleGround.visible = true;
   invisibleGround.shapeColor = "#f4cbaa";
     
@@ -77,6 +77,8 @@ function setup() {
   ground = createSprite(width/2,height,width,2);
   ground.addImage("ground",groundImage);
   ground.x = width/2;
+  ground.depth= trex.depth;
+  trex.depth = trex.depth+1;
   
   //crea grupo de obstaculos y grupo de nubes
   obstaclesGroup = new Group();
@@ -131,7 +133,7 @@ function draw() {
     
     //salta cuando preciono la barra espaciadora
     if(touches.length > 0 || keyDown("space")&& trex.y >= height-120) {
-      trex.velocityY = -10; 
+      trex.velocityY = -10;
       jumpSound.play(); 
       touches = [];
     }
@@ -175,7 +177,7 @@ function draw() {
      //letrero de gameOver y reset visble
       gameOver.visible = true;
       restart.visible = true;
-      if(touches.length>0 || keyDown("SPACE") ||       mousePressedOver(restart)){
+      if(touches.length>0 || keyDown("SPACE") || mousePressedOver(restart)){
         reset();
         touches = [];
       }     
@@ -186,7 +188,7 @@ function draw() {
 
 function spawnObstacles(){
  if (frameCount % 60 === 0){
-   var obstacle = createSprite(600,height-95,20,30 );
+   var obstacle = createSprite(1000,height-95,20,30 );
    obstacle.setCollider('circle',0,0,45); 
    obstacle.debug = false;
    obstacle.velocityX = -(6 + 3 * score/100);
@@ -213,7 +215,7 @@ function spawnObstacles(){
     obstacle.scale = 0.3;
     obstacle.lifetime = 300;
     obstacle.depth = trex.depth;
-    trex.depth +=1;
+    trex.depth = trex.depth+1;
    //añade cada obstaculo al grupo
     obstaclesGroup.add(obstacle);
  }
@@ -226,10 +228,10 @@ function spawnClouds() {
     cloud.y = Math.round(random(100,220));
     cloud.addImage(cloudImage);
     cloud.scale = 0.6;
-    cloud.velocityX = -(3+score/200);
+    cloud.velocityX = -(6 + score/200);
     
      //asigna ciclo de vida a la variable nubes
-    cloud.lifetime = 700;
+    cloud.lifetime = 300;
     
     //ajusta la profundidad del trex con relacion a las nubes
     cloud.depth = trex.depth;
